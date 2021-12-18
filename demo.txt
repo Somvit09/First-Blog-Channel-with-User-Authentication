@@ -1,0 +1,23 @@
+class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    email = Column(String(100), unique=True)
+    password = Column(String(100))
+    name = Column(String(1000))
+    posts = relationship('BlogPost', back_populates="author_relationship")
+
+
+class BlogPost(UserMixin, db.Model):
+    __tablename__ = "blog_post"
+    id = Column(Integer, primary_key=True)
+    title = Column(String(250), unique=True, nullable=False)
+    subtitle = Column(String(250), nullable=False)
+    date = Column(String(250), nullable=False)
+    body = Column(Text, nullable=False)
+    author = Column(String(250), nullable=False)
+    img_url = Column(String(250), nullable=False)
+    author_id = Column(Integer, ForeignKey('users.id'))
+    author_relationship = relationship('User', back_populates='posts')
+
+
+db.create_all()
